@@ -1,3 +1,4 @@
+import { uniqueId } from "lodash";
 export interface ITask {
   id: string;
   content: string;
@@ -22,31 +23,40 @@ export interface IDataState {
   columnOrder: string[];
 }
 
+const task1id = uniqueId("task-");
+const task2id = uniqueId("task-");
+const task3id = uniqueId("task-");
+const task4id = uniqueId("task-");
+
+const col1id = uniqueId("column-");
+const col2id = uniqueId("column-");
+const col3id = uniqueId("column-");
+
 const initialData: IDataState = {
   tasks: {
-    "task-1": { id: "task-1", content: "Take out the garbage" },
-    "task-2": { id: "task-2", content: "Watch my favorite show" },
-    "task-3": { id: "task-3", content: "Charge my phone" },
-    "task-4": { id: "task-4", content: "Cook dinner" }
+    [task1id]: { id: task1id, content: "Take out the garbage" },
+    [task2id]: { id: task2id, content: "Watch my favorite show" },
+    [task3id]: { id: task3id, content: "Charge my phone" },
+    [task4id]: { id: task4id, content: "Cook dinner" }
   },
   columns: {
-    "column-1": {
-      id: "column-1",
+    [col1id]: {
+      id: col1id,
       title: "To do",
-      taskIds: ["task-1", "task-2", "task-3", "task-4"]
+      taskIds: [task1id, task2id, task3id, task4id]
     },
-    "column-2": {
-      id: "column-2",
+    [col2id]: {
+      id: col2id,
       title: "In Progress",
       taskIds: []
     },
-    "column-3": {
-      id: "column-3",
+    [col3id]: {
+      id: col3id,
       title: "Done",
       taskIds: []
     }
   },
-  columnOrder: ["column-1", "column-2", "column-3"]
+  columnOrder: [col1id, col2id, col3id]
 };
 
 export default initialData;

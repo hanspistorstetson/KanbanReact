@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
 import { ITask } from "../initial-data";
 
-const Container = styled.div<{ isDragging: boolean }>`
+export const Container = styled.div<{ isDragging?: boolean }>`
   border: 1px solid lightgrey;
   border-radius: 2px;
   padding: 8px;

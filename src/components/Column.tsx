@@ -3,19 +3,22 @@ import styled from "styled-components";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import { ITask, IColumn } from "../initial-data";
 import Task from "./Task";
+import NewTaskEditor from "./NewTaskEditor";
 
-const Container = styled.div`
+export const Container = styled.div`
   margin: 8px;
-  width: 220px;
+  min-width: 300px;
   border: 1px solid lightgrey;
   border-radius: 2px;
   background-color: white;
 
   display: flex;
+  flex-grow: 1
   flex-direction: column;
 `;
-const Title = styled.h3`
+export const Title = styled.h3`
   padding: 8px;
+  width: 100%;
 `;
 const TaskList = styled.div<{ isDraggingOver: boolean }>`
   padding: 8px;
@@ -28,6 +31,7 @@ interface IProps {
   column: IColumn;
   tasks: ITask[];
   index: number;
+  addNewTask: Function;
 }
 
 export default class Column extends React.Component<IProps> {
@@ -50,6 +54,7 @@ export default class Column extends React.Component<IProps> {
                     <Task key={task.id} task={task} index={index} />
                   ))}
                   {provided.placeholder}
+                  <NewTaskEditor addNewTask={this.props.addNewTask} />
                 </TaskList>
               )}
             </Droppable>

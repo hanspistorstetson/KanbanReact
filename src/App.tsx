@@ -1,15 +1,49 @@
 import React from "react";
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
-import initialData, { IDataState } from "./initial-data";
+import { uniqueId } from "lodash";
+
+import initialData, { IDataState, IColumnDict } from "./initial-data";
 import Column from "./components/Column";
+import NewColumnEditor from "./components/NewColumnEditor";
 
 const Container = styled.div`
   display: flex;
+  overflow: auto;
+`;
+
+const AppContainer = styled.div`
+  width: 90%;
+  margin: 0 auto;
+  background-color: blue;
 `;
 
 class App extends React.Component<{}, IDataState> {
   readonly state = initialData;
+
+  handleAddTask = (newTaskName: string) => {
+    console.log(newTaskName);
+  };
+
+  handleAddColumn = (newColumnName: string) => {
+    console.log(`Adding column ${newColumnName}`);
+    const newColumnId = uniqueId("column-");
+    const newColumn = {
+      id: newColumnId,
+      title: newColumnName,
+      taskIds: []
+    };
+    const newState = {
+      ...this.state,
+      columns: {
+        ...this.state.columns,
+        [newColumnId]: newColumn
+      },
+      columnOrder: [...this.state.columnOrder, newColumnId]
+    };
+
+    this.setState(newState);
+  };
 
   onDragEnd = ({ destination, source, draggableId, type }: DropResult) => {
     if (!destination) return;
@@ -89,35 +123,40 @@ class App extends React.Component<{}, IDataState> {
   };
 
   render() {
+    console.log(this.state);
     return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
-        <Droppable
-          droppableId="all-columns"
-          direction="horizontal"
-          type="COLUMN"
-        >
-          {provided => (
-            <Container {...provided.droppableProps} ref={provided.innerRef}>
-              {this.state.columnOrder.map((columnId, index) => {
-                const column = this.state.columns[columnId];
-                const tasks = column.taskIds.map(
-                  taskId => this.state.tasks[taskId]
-                );
+      <AppContainer>
+        <DragDropContext onDragEnd={this.onDragEnd}>
+          <Droppable
+            droppableId="all-columns"
+            direction="horizontal"
+            type="COLUMN"
+          >
+            {provided => (
+              <Container {...provided.droppableProps} ref={provided.innerRef}>
+                {this.state.columnOrder.map((columnId, index) => {
+                  const column = this.state.columns[columnId];
+                  const tasks = column.taskIds.map(
+                    taskId => this.state.tasks[taskId]
+                  );
 
-                return (
-                  <Column
-                    key={column.id}
-                    column={column}
-                    tasks={tasks}
-                    index={index}
-                  />
-                );
-              })}
-              {provided.placeholder}
-            </Container>
-          )}
-        </Droppable>
-      </DragDropContext>
+                  return (
+                    <Column
+                      key={column.id}
+                      column={column}
+                      tasks={tasks}
+                      index={index}
+                      addNewTask={this.handleAddTask}
+                    />
+                  );
+                })}
+                {provided.placeholder}
+                <NewColumnEditor handleAddColumn={this.handleAddColumn} />
+              </Container>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </AppContainer>
     );
   }
 }
