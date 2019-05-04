@@ -1,0 +1,17 @@
+"*":
+  core:
+    customFileTypes:
+      "source.tsx": [
+        "tsx"
+      ]
+    telemetryConsent: "limited"
+  "exception-reporting":
+    userId: "cf0dcb38-3bf3-4bdc-9313-3d851e8e85f8"
+  "linter-tslint":
+    fixOnSave: true
+  "linter-ui-default":
+    panelHeight: 300
+  "prettier-atom":
+    formatOnSaveOptions:
+      enabled: true
+    useEslint: true
